@@ -3,6 +3,7 @@ from code_1 import QueryProcessor, preprocess_query, preprocess_proximity_query,
 import os
 import nltk
 
+nltk.data.path.append('data/nltk_data')
 qp = QueryProcessor(preprocessor_function=preprocess_query, proximity_processor=preprocess_proximity_query)
 app = Flask(__name__)
 
@@ -22,6 +23,7 @@ def my_app():
                 results = qp.execute_query(query, query_type)
                 if "Error in" in results:
                     context["error"] = results
+                    context["query"] = query
                 else:
                     docs = []
 
@@ -33,7 +35,7 @@ def my_app():
 
                         docs.append({'doc_path':doc_path,'title': title, 'text': text})
 
-                    context = {
+                    context = {  
                         'total_results': len(results),
                         'docs': docs,
                         'query_type': query_type,
@@ -61,9 +63,5 @@ def getDoc(doc_path):
     return render_template('document.html', context=context)
 
 
-
 if __name__ == '__main__':
-    nltk.download('punkt')
-    nltk.download('punkt_tab')
-    nltk.download('wordnet')
     app.run(debug=True)
