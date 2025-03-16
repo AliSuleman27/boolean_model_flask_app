@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
-from code_1 import QueryProcessor, preprocess_query, preprocess_proximity_query, read_file
+from backend import QueryProcessor, preprocess_query, preprocess_proximity_query, read_file
 import os
 import nltk
 
