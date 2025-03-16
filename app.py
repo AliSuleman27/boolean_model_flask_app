@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from code_1 import QueryProcessor, preprocess_query, preprocess_proximity_query, read_file
 import os
+import nltk
 
 qp = QueryProcessor(preprocessor_function=preprocess_query, proximity_processor=preprocess_proximity_query)
 app = Flask(__name__)
@@ -58,4 +59,7 @@ def getDoc(doc_path):
 
 
 if __name__ == '__main__':
+    nltk.download('punkt')
+    nltk.download('punkt_tab')
+    nltk.download('wordnet')
     app.run(debug=True)

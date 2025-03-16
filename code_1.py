@@ -15,10 +15,6 @@ def read_file(filepath):
     return str(content)
 
 def preprocess_and_get_features(filepath, stop_words, text=None):
-    
-    nltk.download('punkt')
-    nltk.download('punkt_tab')
-    nltk.download('wordnet')
     if text is None:
         text = read_file(filepath)
     
@@ -49,9 +45,6 @@ def preprocess_query(query,stop_words_directory):
     return preprocess_and_get_features('',stop_words,query)
 
 def preprocess_proximity_query(query):
-    nltk.download('punkt')
-    nltk.download('punkt_tab')
-    nltk.download('wordnet')
     items = query.split(" ")
     new_items = []
     new_items.append(items[0])
