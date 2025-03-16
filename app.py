@@ -18,23 +18,26 @@ def my_app():
             context["error"] = "The query is not a properly formatted " + query_type + " query"
             
         else:
-            results = qp.execute_query(query, query_type)
-            docs = []
+            if not qp:
+                context['error'] = "Errorrrrr wohi wala"
+            else:
+                results = qp.execute_query(query, query_type)
+                docs = []
 
-            for result in results:
-                doc_path = str(int(result))
-                file_content = read_file("Abstracts/" + doc_path + ".txt").strip().split("\n", 1)
-                title = file_content[0] if len(file_content) > 0 else "Untitled"
-                text = file_content[1] if len(file_content) > 1 else ""
+                for result in results:
+                    doc_path = str(int(result))
+                    file_content = read_file("Abstracts/" + doc_path + ".txt").strip().split("\n", 1)
+                    title = file_content[0] if len(file_content) > 0 else "Untitled"
+                    text = file_content[1] if len(file_content) > 1 else ""
 
-                docs.append({'doc_path':doc_path,'title': title, 'text': text})
+                    docs.append({'doc_path':doc_path,'title': title, 'text': text})
 
-            context = {
-                'total_results': len(results),
-                'docs': docs,
-                'query_type': query_type,
-                'query' : query
-            }
+                context = {
+                    'total_results': len(results),
+                    'docs': docs,
+                    'query_type': query_type,
+                    'query' : query
+                }
         
     return render_template('index.html', context=context)
 
