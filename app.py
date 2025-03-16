@@ -19,25 +19,26 @@ def my_app():
             
         else:
             if qp:
-                context['error'] = f"Errorrrrr wohi wala {type(qp)}"
-            else:
                 results = qp.execute_query(query, query_type)
-                docs = []
+                if "Error in" in results:
+                    context["error"] = results
+                else:
+                    docs = []
 
-                for result in results:
-                    doc_path = str(int(result))
-                    file_content = read_file("Abstracts/" + doc_path + ".txt").strip().split("\n", 1)
-                    title = file_content[0] if len(file_content) > 0 else "Untitled"
-                    text = file_content[1] if len(file_content) > 1 else ""
+                    for result in results:
+                        doc_path = str(int(result))
+                        file_content = read_file("Abstracts/" + doc_path + ".txt").strip().split("\n", 1)
+                        title = file_content[0] if len(file_content) > 0 else "Untitled"
+                        text = file_content[1] if len(file_content) > 1 else ""
 
-                    docs.append({'doc_path':doc_path,'title': title, 'text': text})
+                        docs.append({'doc_path':doc_path,'title': title, 'text': text})
 
-                context = {
-                    'total_results': len(results),
-                    'docs': docs,
-                    'query_type': query_type,
-                    'query' : query
-                }
+                    context = {
+                        'total_results': len(results),
+                        'docs': docs,
+                        'query_type': query_type,
+                        'query' : query
+                    }
         
     return render_template('index.html', context=context)
 
