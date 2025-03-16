@@ -144,15 +144,17 @@ class QueryProcessor:
         return list(result)
 
     def get_postings(self, p_query):
-        import shelve
         postings_list = []
-        with shelve.open('Indexes/positional_index') as db:
-            for pos, word in p_query:
-                try:
-                    postings_list.append(db[word])
-                except KeyError:
-                    postings_list.append(np.array([]))  # Return an empty numpy array if the word is not found
+        try:
+            with shelve.open('Indexes/positional_index') as db:
+                for pos, word in p_query:
+                    # Using .get() to avoid KeyError and handling missing words
+                    result = db.get(word, np.array([]))  # Empty result if word is not found
+                    postings_list.append(result)
+        except Exception as e:
+            print(f"Error accessing the positional index: {e}")
         return postings_list
+
 
     def positional_query(self,text):
         processed_query = self.preprocessor_function(text,'Stopword-List.txt')
