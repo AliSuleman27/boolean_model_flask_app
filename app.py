@@ -18,8 +18,8 @@ def my_app():
             context["error"] = "The query is not a properly formatted " + query_type + " query"
             
         else:
-            if not qp:
-                context['error'] = "Errorrrrr wohi wala"
+            if qp:
+                context['error'] = f"Errorrrrr wohi wala {type(qp)}"
             else:
                 results = qp.execute_query(query, query_type)
                 docs = []
